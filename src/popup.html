@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Unduck Settings</title>
+        <link rel="stylesheet" href="style.css" />
+        <style>
+            /* Embedding some base variables to match app theme */
+            :root {
+                --bg-main: #131313;
+                --bg-surface-1: #1f1f1f;
+                --text-main: #eee;
+                --text-muted: #aaa;
+                --toggle-track: #2a2a2a;
+                --toggle-thumb: #666;
+                --toggle-track-checked: #eee;
+                --toggle-thumb-checked: #1f1f1f;
+            }
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --bg-main: #f5f5f5;
+                    --bg-surface-1: #ffffff;
+                    --text-main: #1a1a1a;
+                    --text-muted: #666;
+                    --toggle-track: #d0d0d0;
+                    --toggle-thumb: #888;
+                    --toggle-track-checked: #1a1a1a;
+                    --toggle-thumb-checked: #fff;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>Unduck Helper</h1>
+            </header>
+            <main>
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <label for="autoSubmit" class="setting-label">Auto-Submit Queries</label>
+                        <p class="setting-description">
+                            Automatically press enter/send on autofilled sites.
+                        </p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="autoSubmit" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </main>
+            <footer>
+                <a href="https://search.timmatheis.com/" target="_blank">Unduck Website</a>
+                <a href="https://github.com/HuckleberryLovesYou/unduck" target="_blank">Unduck on GitHub</a>
+                <a href="https://github.com/HuckleberryLovesYou/unduck-extension" target="_blank">Unduck Helper on GitHub</a>
+            </footer>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>
