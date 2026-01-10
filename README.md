@@ -1,6 +1,6 @@
 # Unduck Helper
 
-A companion browser extension for [Unduck](https://github.com/t3dotgg/unduck) that enables search autofill on websites that don't natively support URL query parameters (like Google Gemini).
+A companion browser extension for [Unduck](https://github.com/huckleberrylovesyou/unduck) that enables search autofill on websites that don't natively support URL query parameters (like Google Gemini).
 
 ## Features
 
