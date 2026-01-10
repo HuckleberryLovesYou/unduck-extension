@@ -14,19 +14,13 @@ function handleGemini(query) {
 
             if (input) {
                 obs.disconnect();
-                
-                // Focus
                 input.focus();
-                
                 // Set content simulating rich text paragraph
                 input.innerHTML = `<p>${query}</p>`; 
-                
-                // Trigger input event so framework detects change
                 input.dispatchEvent(new Event('input', { bubbles: true }));
 
                 // Only submit if enabled
                 if (autoSubmit) {
-                    // Attempt to submit
                     const attemptSubmit = () => {
                         const sendButton = document.querySelector('button[aria-label="Send message"]');
                         if (sendButton && sendButton.getAttribute('aria-disabled') !== 'true') {
@@ -36,9 +30,8 @@ function handleGemini(query) {
                         return false;
                     };
 
-                    // Try immediately
                     if (!attemptSubmit()) {
-                        // If not ready (e.g. disabled), check rapidly for a short time
+                        // If not ready (e.g. disabled), check rapidly for 5s
                         const buttonObserver = new MutationObserver(() => {
                             if (attemptSubmit()) {
                                 buttonObserver.disconnect();
@@ -53,7 +46,7 @@ function handleGemini(query) {
                             attributeFilter: ['aria-disabled'] 
                         });
                         
-                        // Safety timeout for button observer
+                        // Obserever timeout
                         const cleanupObserver = () => clearTimeout(fallbackTimer);
                         const fallbackTimer = setTimeout(() => buttonObserver.disconnect(), 5000);
                     }
@@ -71,10 +64,49 @@ function handleGemini(query) {
     });
 }
 
+// Docs specific handler
+function handleDocs(query) {
+    chrome.storage.local.get(['autoSubmit'], (result) => {
+        const autoSubmit = result.autoSubmit !== false; // Default to true
+
+        const waitForSearchBar = setInterval(() => {
+            const input = document.querySelector('.search-bar');
+            if (input) {
+                clearInterval(waitForSearchBar);
+                input.focus();
+                input.value = query;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+
+                if (autoSubmit) {
+                    // Delay for site to finish loading the search results, since pressing enter before doesn't work.
+                    setTimeout(() => {
+                        input.focus();
+                        const enterEvent = {
+                            key: 'Enter',
+                            code: 'Enter',
+                            keyCode: 13,
+                            which: 13,
+                            bubbles: true
+                        };
+                        input.dispatchEvent(new KeyboardEvent('keydown', enterEvent));
+                        input.dispatchEvent(new KeyboardEvent('keypress', enterEvent));
+                        input.dispatchEvent(new KeyboardEvent('keyup', enterEvent));
+                    }, 750);
+                }
+            }
+        }, 100);
+
+        // Timeout fallback
+        setTimeout(() => clearInterval(waitForSearchBar), 10000);
+    });
+}
+
 // Main logic
 const query = getUnduckQuery();
 if (query) {
     if (location.hostname.includes('gemini.google.com')) {
         handleGemini(query);
+    } else if (location.hostname.includes('docs.timmatheis.com')) {
+        handleDocs(query);
     }
 }

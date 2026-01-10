@@ -4,12 +4,10 @@
   "version": "0.1.0",
   "description": "Helper extension for Unduck to autofill searches on sites which don't support it natively.",
   "homepage_url": "https://github.com/HuckleberryLovesYou/unduck-extension",
-  "permissions": [
-    "scripting",
-    "storage"
-  ],
+  "permissions": ["scripting", "storage"],
   "host_permissions": [
-    "*://gemini.google.com/app*"
+    "*://gemini.google.com/app*",
+    "*://docs.timmatheis.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -17,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://gemini.google.com/app*"],
+      "matches": ["*://gemini.google.com/app*", "*://docs.timmatheis.com/*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }
