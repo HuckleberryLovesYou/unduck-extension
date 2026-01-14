@@ -16,7 +16,10 @@ function handleGemini(query) {
                 obs.disconnect();
                 input.focus();
                 // Set content simulating rich text paragraph
-                input.innerHTML = `<p>${query}</p>`; 
+                const p = document.createElement('p');
+                p.textContent = query;
+                input.innerHTML = '';
+                input.appendChild(p); 
                 input.dispatchEvent(new Event('input', { bubbles: true }));
 
                 // Only submit if enabled
