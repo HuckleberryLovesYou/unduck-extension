@@ -101,12 +101,78 @@ function handleDocs(query) {
     });
 }
 
+// Copilot specific handler
+function handleCopilot(query) {
+    chrome.storage.local.get(['autoSubmit'], (result) => {
+        const autoSubmit = result.autoSubmit !== false; // Default to true
+
+        const observer = new MutationObserver((mutations, obs) => {
+            const input = document.getElementById('userInput');
+
+            if (input) {
+                obs.disconnect();
+                input.focus();
+                input.value = query;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+
+                // Only submit if enabled
+                if (autoSubmit) {
+                    const attemptSubmit = () => {
+                        const sendButton = document.querySelector('button[data-testid="submit-button"]');
+                        if (sendButton && !sendButton.disabled && sendButton.getAttribute('aria-disabled') !== 'true') {
+                            sendButton.click();
+                            return true;
+                        }
+                        return false;
+                    };
+
+                    if (!attemptSubmit()) {
+                        const buttonObserver = new MutationObserver(() => {
+                            if (attemptSubmit()) {
+                                buttonObserver.disconnect();
+                                cleanupObserver();
+                            }
+                        });
+                        
+                        buttonObserver.observe(document.body, { 
+                            childList: true, 
+                            subtree: true, 
+                            attributes: true, 
+                            attributeFilter: ['disabled', 'aria-disabled'] 
+                        });
+                        
+                        const cleanupObserver = () => clearTimeout(fallbackTimer);
+                        const fallbackTimer = setTimeout(() => buttonObserver.disconnect(), 5000);
+                    }
+                }
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        setTimeout(() => observer.disconnect(), 10000);
+    });
+}
+
 // Main logic
-const query = getUnduckQuery();
-if (query) {
-    if (location.hostname.includes('gemini.google.com')) {
-        handleGemini(query);
-    } else if (location.hostname.includes('docs.timmatheis.com')) {
-        handleDocs(query);
+const main = () => {
+    const query = getUnduckQuery();
+    if (query) {
+        if (location.hostname.includes('gemini.google.com')) {
+            handleGemini(query);
+        } else if (location.hostname.includes('docs.timmatheis.com')) {
+            handleDocs(query);
+        } else if (location.hostname.includes('copilot.microsoft.com')) {
+            handleCopilot(query);
+        }
     }
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', main);
+} else {
+    main();
 }
