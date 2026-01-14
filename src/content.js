@@ -1,3 +1,16 @@
+// Inject Unduck marker for detection (runs at document_start)
+(function() {
+    try {
+        if (document.getElementById('__unduck_extension_installed__')) return;
+        const marker = document.createElement('div');
+        marker.id = '__unduck_extension_installed__';
+        marker.style.display = 'none';
+        (document.body || document.documentElement).appendChild(marker);
+    } catch (e) {
+        // Ignore error
+    }
+})();
+
 // Helper to extract query param
 function getUnduckQuery() {
     const params = new URLSearchParams(window.location.search);
