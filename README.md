@@ -45,4 +45,4 @@ This extension runs **only** on specific supported domains (currently `gemini.go
 
 ## License
 
-MIT
+GPL-3.0
