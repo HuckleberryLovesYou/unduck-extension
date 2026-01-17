@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const autoSubmitCheckbox = document.getElementById('autoSubmit');
 
+    // Display version
+    const version = chrome.runtime.getManifest().version;
+    const versionDisplay = document.getElementById('version-display');
+    if (versionDisplay) {
+        versionDisplay.textContent = `v${version}`;
+    }
+
     // Load saved setting (default to true)
     chrome.storage.local.get(['autoSubmit'], (result) => {
         autoSubmitCheckbox.checked = result.autoSubmit !== false;
