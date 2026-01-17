@@ -1,0 +1,3 @@
+src/chromium/src.pem
+src/chromium/unduck-extension-chromium_v*.crx
+src/gecko/unduck-extension-gecko_v*.xpi
