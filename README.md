@@ -5,9 +5,10 @@ A companion browser extension for [Unduck](https://github.com/huckleberrylovesyo
 ## Features
 
 - **Seamless Redirects**: Detects specific `?unduck=QUERY` parameters and injects them into the target site's search bar.
-- **Smart Injection**: Uses specialized logic to handle complex inputs (like rich text editors on Gemini).
+- **Smart Injection**: Uses specialized logic to handle complex inputs.
 - **Auto-Submit**: Configurable option to automatically press "Enter" or click "Send" after injection.
 - **Detection**: Allows the main Unduck web app to verify if the extension is installed to provide a smooth user experience.
+- **Auto Setup**: Automatically sets Unduck as (default) search engine. 
 
 ## Installation
 
