@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Unduck Helper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Helper extension for Unduck to autofill searches on sites which don't support it natively.",
   "homepage_url": "https://github.com/HuckleberryLovesYou/unduck-extension",
   "permissions": ["storage"],
